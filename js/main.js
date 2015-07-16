@@ -12,7 +12,7 @@ var GameState = {
   },
   //executed after everything is loaded
   create: function() {
-      
+
     //scaling options
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     
@@ -27,37 +27,37 @@ var GameState = {
     this.background.inputEnabled = true;
     this.background.events.onInputDown.add(this.placeItem, this);
 
-    this.pet = this.game.add.sprite(100, 400, 'pet',0);
+    this.pet = this.game.add.sprite(100, 450, 'pet',0);
     this.pet.animations.add('funnyfaces', [0, 1, 2, 3, 2, 1, 0], 7, false);
     this.pet.anchor.setTo(0.5);
 
     //custom properties of the pet
-    this.pet.customParams = {health: 100, fun: 100};
+    this.pet.customParams = {name: "Fluffy",health: 100, fun: 100};
 
     //draggable pet
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
     
     //buttons
-    this.apple = this.game.add.sprite(72, 570, 'apple');
+    this.apple = this.game.add.sprite(350, 570, 'apple');
     this.apple.anchor.setTo(0.5);
     this.apple.customParams = {health: 20};
     this.apple.inputEnabled = true;
     this.apple.events.onInputDown.add(this.pickItem, this);
 
-    this.candy = this.game.add.sprite(144, 570, 'candy');
+    this.candy = this.game.add.sprite(430, 570, 'candy');
     this.candy.anchor.setTo(0.5);
     this.candy.customParams = {health: -10, fun: 10};
     this.candy.inputEnabled = true;
     this.candy.events.onInputDown.add(this.pickItem, this);
 
-    this.toy = this.game.add.sprite(216, 570, 'toy');
+    this.toy = this.game.add.sprite(510, 570, 'toy');
     this.toy.anchor.setTo(0.5);
     this.toy.customParams = {fun: 30};
     this.toy.inputEnabled = true;
     this.toy.events.onInputDown.add(this.pickItem, this);
 
-    this.rotate = this.game.add.sprite(288, 570, 'rotate');
+    this.rotate = this.game.add.sprite(590, 570, 'rotate');
     this.rotate.anchor.setTo(0.5);
     this.rotate.inputEnabled = true;
     this.rotate.events.onInputDown.add(this.rotatePet, this);
@@ -69,11 +69,14 @@ var GameState = {
 
     //stats
     var style = { font: "20px Arial", fill: "#fff"};
-    this.game.add.text(10, 20, "Health:", style);
-    this.game.add.text(140, 20, "Fun:", style);
+    this.game.add.text(10, 20, "Name:", style);
+    this.game.add.text(160, 20, "Health:", style);
+    this.game.add.text(270, 20, "Fun:", style);
 
-    this.healthText = this.game.add.text(80, 20, "", style);
-    this.funText = this.game.add.text(185, 20, "", style);
+    this.nameText = this.game.add.text(75, 20, "", style);
+    this.healthText = this.game.add.text(225, 20, "", style);
+    this.funText = this.game.add.text(312, 20, "", style);
+      
     this.refreshStats();
 
     //decrease health and fun every 10 seconds
@@ -172,7 +175,7 @@ var GameState = {
   //clear all buttons from selection
   clearSelection: function() {
     //set alpha to 1
-    this.buttons.forEach(function(element){element.alpha = 1});
+    this.buttons.forEach(function(element){element.alpha = 1;});
 
     //clear selection
     this.selectedItem = null;
@@ -181,12 +184,13 @@ var GameState = {
   refreshStats: function() {
     this.healthText.text = this.pet.customParams.health;
     this.funText.text = this.pet.customParams.fun;
+    this.nameText.text = this.pet.customParams.name;
   },
   
   //the pet slowly becomes less health and bored
   reduceProperties: function() {
-    this.pet.customParams.health = Math.max(0, this.pet.customParams.health - 20);
-    this.pet.customParams.fun = Math.max(0, this.pet.customParams.fun - 30);
+    this.pet.customParams.health = Math.max(0, this.pet.customParams.health - 10);
+    this.pet.customParams.fun = Math.max(0, this.pet.customParams.fun - 20);
     this.refreshStats();
   },
 
@@ -207,7 +211,7 @@ var GameState = {
 };
 
 //initiate the Phaser framework
-var game = new Phaser.Game(360, 640, Phaser.AUTO);
+var game = new Phaser.Game(900, 640, Phaser.AUTO);
 
 game.state.add('GameState', GameState);
 game.state.start('GameState');

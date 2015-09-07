@@ -1,4 +1,57 @@
-//this game will have only 1 state
+// the load screen - http://www.emanueleferonato.com/2014/08/28/phaser-tutorial-understanding-phaser-states/
+var LoadState = function(game){};
+
+LoadState.prototype = {
+	preload: function(){
+        // http://www.clker.com/search/cat/3
+        this.game.load.image("loading","assets/images/load_screen.png"); 
+        this.game.load.image('settings', 'assets/images/settings.png');
+        this.game.load.image('playBtn', 'assets/images/play.png');
+	},
+  	create: function(){
+		//scaling options
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
+
+        //have the game centered horizontally
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+
+        //screen size will be set automatically
+        this.scale.setScreenSize(true);
+        
+        this.background = this.game.add.sprite(0,0, 'loading');
+		//this.game.state.start("GameState");
+        
+        //buttons
+        this.settings = this.game.add.sprite(525, 450, 'settings');
+        this.settings.anchor.setTo(0.5);
+        this.settings.inputEnabled = true;
+        this.settings.events.onInputDown.add(this.pickItem, this);
+        
+        this.playBtn = this.game.add.sprite(375, 450, 'playBtn');
+        this.playBtn.anchor.setTo(0.5);
+        this.playBtn.inputEnabled = true;
+        this.playBtn.events.onInputDown.add(this.pickItem, this);
+        
+        this.uiBlocked = false;
+	},
+    
+    pickItem: function(sprite, event){
+        if(!this.uiBlocked) {
+            
+          this.uiBlocked = true;
+
+          //alpha to indicate selection
+          sprite.alpha = 0.4;
+
+        
+          //sprite.alpha = 1;    
+          this.uiBlocked = false;    
+        }
+    }
+}
+
+// the game play
 var GameState = {
   //load the game assets before the game starts
   preload: function() {
@@ -252,6 +305,6 @@ var GameState = {
 
 //initiate the Phaser framework
 var game = new Phaser.Game(940, 640, Phaser.AUTO);
-
+game.state.add('LoadState', LoadState);
 game.state.add('GameState', GameState);
-game.state.start('GameState'); 
+game.state.start('LoadState'); 

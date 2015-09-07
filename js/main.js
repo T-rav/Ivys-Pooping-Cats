@@ -106,7 +106,40 @@ var GameState = {
     
     // const
     var xPos = 15;
+    var maxPoops = 25;
+    
+    // Collections
+    function removePoop(item) {
+        item.alpha = 0.3;
+        setTimeout(function(){
+            item.alpha = 0.2;
+             setTimeout(function(){
+                item.alpha = 0.1;
+                    setTimeout(function(){
+                        if(item.alive){
+                            item.kill();
+                            gameState.cleanedPoops += 1;
+                        }
+                    },150);
+            },100);
+        },50);
+        
+    }  
+    
+    gameState.poopCollection = game.add.group();  
+    
+    // Create some poops off screen.
+    // http://phaser.io/examples/v2/groups/recycling
+    for (var i = 0; i < maxPoops; i++)
+    {
+        gameState.poopCollection.create(-100,-100, 'poop');
+        var baddie = gameState.poopCollection.getFirstAlive();
+        baddie.kill();
+    }
       
+    gameState.poopCollection.setAll('inputEnabled', true);
+    gameState.poopCollection.callAll('events.onInputUp.add', 'events.onInputUp', removePoop);  
+    
     //buttons
     this.poop = this.game.add.sprite(390, xPos+5, 'tinyPoop');
     this.poop.anchor.setTo(0.5);
@@ -138,9 +171,8 @@ var GameState = {
 
     //nothing selected
     this.selectedItem = null;
-    
+      
     //stats
-    
     var style = { font: "20px Arial", fill: "#000"};
     var nameStyle = { font: "20px Arial", fill: "#974DB1"};
     this.game.add.text(10, xPos, "Name:", style);
@@ -222,7 +254,14 @@ var GameState = {
         var y = boundYCordinate(petY, poopOffsetY);
         for(var i = 0; i < shits; i++){
             this.pet.customParams.poops+=1;
-            game.add.sprite(x+(i*spriteOffset),y, 'poop'); 
+            var pieceOfShit = gameState.poopCollection.getFirstExists(false);
+
+            if (pieceOfShit)
+            {   
+                pieceOfShit.position = new PIXI.Point(x+(i*spriteOffset), y);
+                pieceOfShit.alpha = 1;
+                pieceOfShit.revive();
+            }
         }
           
         //show updated stats
@@ -286,17 +325,14 @@ var GameState = {
           
         // make cat pooop
         this.pet.customParams.poops+=1;
-        var poo = this.game.add.sprite(x-100, y-30, 'poop');
-        
-        /*
-        poo.anchor.setTo(0.5);
-        poo.inputEncoding = true;
-        poo.events.onInputDown.add(function(){
-            if(pet.customParams.poops > 0){
-                pet.customParams.poops-=1;
+         var pieceOfShit = gameState.poopCollection.getFirstExists(false);
+
+            if (pieceOfShit)
+            {
+                pieceOfShit.alpha = 1;
+                pieceOfShit.position = new PIXI.Point(x-100, y-30);
+                pieceOfShit.revive();
             }
-            
-        }, this);*/
           
         //clear selection
         this.clearSelection();
@@ -318,7 +354,7 @@ var GameState = {
     this.healthText.text = this.pet.customParams.health;
     this.funText.text = this.pet.customParams.fun;
     this.nameText.text = this.pet.customParams.name;
-    this.poopText.text = ": "+this.pet.customParams.poops;  
+    this.poopText.text = ": "+gameState.cleanedPoops;  
   },
   
   //the pet slowly becomes less health and bored
@@ -360,7 +396,9 @@ var GameState = {
 };
 
 var gameState = {
-    petName : "FluffyNutz"
+    petName : "FluffyNutz",
+    poopCollection:"",
+    cleanedPoops:0
 };
 
 //initiate the Phaser framework

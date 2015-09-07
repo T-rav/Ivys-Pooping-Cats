@@ -7,6 +7,7 @@ LoadState.prototype = {
         // http://www.clker.com/search/cat/3
         this.game.load.image("loading","assets/images/load_screen.png"); 
         this.game.load.image('settings', 'assets/images/settings.png');
+        this.game.load.image('rewards', 'assets/images/trophy.png');
         this.game.load.image('playBtn', 'assets/images/play.png');
 	},
   	create: function(){
@@ -24,15 +25,22 @@ LoadState.prototype = {
 		//this.game.state.start("GameState");
         
         //buttons
-        this.settings = this.game.add.sprite(525, 450, 'settings');
+        this.playBtn = this.game.add.sprite(365, 450, 'playBtn');
+        this.playBtn.anchor.setTo(0.5);
+        this.playBtn.inputEnabled = true;
+        this.playBtn.events.onInputDown.add(this.playGame, this);
+        
+        this.rewards = this.game.add.sprite(455, 450, 'rewards');
+        this.rewards.anchor.setTo(0.5);
+        this.rewards.inputEnabled = true;
+        this.rewards.events.onInputDown.add(this.adjustSettings, this);
+        
+        this.settings = this.game.add.sprite(545, 450, 'settings');
         this.settings.anchor.setTo(0.5);
         this.settings.inputEnabled = true;
         this.settings.events.onInputDown.add(this.adjustSettings, this);
         
-        this.playBtn = this.game.add.sprite(375, 450, 'playBtn');
-        this.playBtn.anchor.setTo(0.5);
-        this.playBtn.inputEnabled = true;
-        this.playBtn.events.onInputDown.add(this.playGame, this);
+        
         
         this.uiBlocked = false;
 	},
@@ -44,11 +52,12 @@ LoadState.prototype = {
           //alpha to indicate selection
           sprite.alpha = 0.4;
 
-          // TODO : read cats name
+          // TODO : read cats name from localstorage
           alertify.prompt("Cat's Name", gameState.petName,
           function(evt, value ){
             gameState.petName = value;
-          });
+          })
+          .set('closable', false); 
 
           sprite.alpha = 1;    
           this.uiBlocked = false;    
@@ -396,9 +405,9 @@ var GameState = {
 };
 
 var gameState = {
-    petName : "FluffyNutz",
+    petName : "Fluffy",
     poopCollection:"",
-    cleanedPoops:0
+    cleanedPoops:0 // TODO : Save max poops collected
 };
 
 //initiate the Phaser framework

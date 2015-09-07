@@ -26,28 +26,32 @@ LoadState.prototype = {
         this.settings = this.game.add.sprite(525, 450, 'settings');
         this.settings.anchor.setTo(0.5);
         this.settings.inputEnabled = true;
-        this.settings.events.onInputDown.add(this.pickItem, this);
+        this.settings.events.onInputDown.add(this.adjustSettings, this);
         
         this.playBtn = this.game.add.sprite(375, 450, 'playBtn');
         this.playBtn.anchor.setTo(0.5);
         this.playBtn.inputEnabled = true;
-        this.playBtn.events.onInputDown.add(this.pickItem, this);
+        this.playBtn.events.onInputDown.add(this.playGame, this);
         
         this.uiBlocked = false;
 	},
     
-    pickItem: function(sprite, event){
+    adjustSettings: function(sprite, event){
         if(!this.uiBlocked) {
             
           this.uiBlocked = true;
-
           //alpha to indicate selection
           sprite.alpha = 0.4;
 
-        
-          //sprite.alpha = 1;    
+          alert("Settings");
+            
+          sprite.alpha = 1;    
           this.uiBlocked = false;    
         }
+    },
+    
+    playGame:function(sprint, event){
+        this.game.state.start("GameState");
     }
 }
 

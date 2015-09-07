@@ -1,3 +1,4 @@
+
 // the load screen - http://www.emanueleferonato.com/2014/08/28/phaser-tutorial-understanding-phaser-states/
 var LoadState = function(game){};
 
@@ -43,8 +44,12 @@ LoadState.prototype = {
           //alpha to indicate selection
           sprite.alpha = 0.4;
 
-          alert("Settings");
-            
+          // TODO : read cats name
+          alertify.prompt("Cat's Name", gameState.petName,
+          function(evt, value ){
+            gameState.petName = value;
+          });
+
           sprite.alpha = 1;    
           this.uiBlocked = false;    
         }
@@ -53,7 +58,7 @@ LoadState.prototype = {
     playGame:function(sprint, event){
         this.game.state.start("GameState");
     }
-}
+} 
 
 // the game play
 var GameState = {
@@ -65,8 +70,10 @@ var GameState = {
     this.game.load.image('rotate', 'assets/images/rotate.png');    
     this.game.load.image('hand', 'assets/images/hand.png');    
     this.game.load.image('arrow', 'assets/images/arrow.png');
-    this.game.load.image('poop', 'assets/images/poop.png');   
-    this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1); 
+    this.game.load.image('poop', 'assets/images/poop.png');  
+    this.game.load.image('tinyPoop', 'assets/images/tiny_poop.png');  
+    
+    this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1);   
   },
   //executed after everything is loaded
   create: function() {
@@ -91,13 +98,19 @@ var GameState = {
     this.pet.anchor.setTo(0.5);
 
     //custom properties of the pet
-    this.pet.customParams = {name: "Fluffy", health: 100, fun: 100, poops:0};
+    this.pet.customParams = {name: gameState.petName, health: 100, fun: 100, poops:0, cleanedPoops:0 };
 
     //draggable pet
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
     
+    // const
+    var xPos = 15;
+      
     //buttons
+    this.poop = this.game.add.sprite(390, xPos+5, 'tinyPoop');
+    this.poop.anchor.setTo(0.5);
+      
     this.fish = this.game.add.sprite(350, 570, 'fish');
     this.fish.anchor.setTo(0.5);
     this.fish.customParams = {health: 20};
@@ -127,15 +140,17 @@ var GameState = {
     this.selectedItem = null;
     
     //stats
-    var style = { font: "20px Arial", fill: "#fff"};
-    var nameStyle = { font: "20px Arial", fill: "#E600E6"};
-    this.game.add.text(10, 20, "Name:", style);
-    this.game.add.text(160, 20, "Health:", style);
-    this.game.add.text(270, 20, "Fun:", style);
+    
+    var style = { font: "20px Arial", fill: "#000"};
+    var nameStyle = { font: "20px Arial", fill: "#974DB1"};
+    this.game.add.text(10, xPos, "Name:", style);
+    this.game.add.text(180, xPos, "Health:", style);
+    this.game.add.text(290, xPos, "Fun:", style);
 
-    this.nameText = this.game.add.text(75, 20, "", nameStyle);
-    this.healthText = this.game.add.text(225, 20, "", style);
-    this.funText = this.game.add.text(312, 20, "", style);
+    this.nameText = this.game.add.text(75, xPos, "", nameStyle);
+    this.healthText = this.game.add.text(245, xPos, "", style);
+    this.funText = this.game.add.text(332, xPos, "", style);
+    this.poopText = this.game.add.text(406, xPos, "", style);  
       
     this.refreshStats();
 
@@ -160,18 +175,55 @@ var GameState = {
       //vibrate device if present
       if(navigator.vibrate) {
         navigator.vibrate(1000);
-      }
+      } 
       
       var petRotation = game.add.tween(this.pet);
       petRotation.to({ angle: '+720' }, 1000);
-      petRotation.onComplete.add(function(){
+      petRotation.onComplete.add(function(event){
         this.uiBlocked = false;
         sprite.alpha = 1;
-        this.pet.customParams.fun += 10;
+        var shits = 3;
+        this.pet.customParams.fun += 30;
+        this.pet.customParams.health -= 40; 
+        var petX = event.x;
+        var petY = event.y;
+          
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }  
+          
+        function boundXCordinate(petX, poopOffset){
+            var max = 700;
+            var min = 100;
+            var x = petX+poopOffset;
+            if(x >= max){
+                x = petX - poopOffset;
+            }
+            return x;
+        }
+          
+        function boundYCordinate(petY, poopOffset){
+            var max = 450;
+            var min = 100;
+            var y = petY+poopOffset;
+            
+            if(y >= max){
+                y = petY - poopOffset;
+            }
+            
+            return y;
+        }
 
-        // scared the shit out of it
-        this.pet.customParams.poops+=1;
-        game.add.sprite(100, 400, 'poop');  
+        
+        var spriteOffset = 40;
+        var poopOffsetX = getRandomInt(40,90);
+        var poopOffsetY = getRandomInt(10,30);
+        var x = boundXCordinate(petX, poopOffsetX);
+        var y = boundYCordinate(petY, poopOffsetY);
+        for(var i = 0; i < shits; i++){
+            this.pet.customParams.poops+=1;
+            game.add.sprite(x+(i*spriteOffset),y, 'poop'); 
+        }
           
         //show updated stats
         this.refreshStats();
@@ -234,8 +286,7 @@ var GameState = {
           
         // make cat pooop
         this.pet.customParams.poops+=1;
-
-        var poo = game.add.sprite(x-100, y-30, 'poop');
+        var poo = this.game.add.sprite(x-100, y-30, 'poop');
         
         /*
         poo.anchor.setTo(0.5);
@@ -267,6 +318,7 @@ var GameState = {
     this.healthText.text = this.pet.customParams.health;
     this.funText.text = this.pet.customParams.fun;
     this.nameText.text = this.pet.customParams.name;
+    this.poopText.text = ": "+this.pet.customParams.poops;  
   },
   
   //the pet slowly becomes less health and bored
@@ -305,6 +357,10 @@ var GameState = {
   gameOver: function() {    
     this.game.state.restart();
   },
+};
+
+var gameState = {
+    petName : "FluffyNutz"
 };
 
 //initiate the Phaser framework

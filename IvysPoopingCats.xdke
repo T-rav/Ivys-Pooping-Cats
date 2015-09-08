@@ -6,8 +6,6 @@
     "projectDirectories": {},
     "currentBuildConfiguration": "Android",
     "currentService": {
-      "methodapi": "accountInfo",
-      "endPoint": "Dropbox-Accounts",
       "service": "db_core"
     }
   }

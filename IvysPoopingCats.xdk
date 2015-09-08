@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "69206742-e991-4e36-9093-54e7b1cb633b",
-      "lastModifiedDate": 1441638190829,
+      "lastModifiedDate": 1441738625995,
       "creationDate": 1416530865675
     },
     "sourceDirectory": "",
@@ -124,7 +124,7 @@
         "excludedLibraries_": "",
         "iosProvs_": [],
         "cordovaCLIVersion_": "3.5",
-        "appVersion_": "0.9.1",
+        "appVersion_": "0.9.2",
         "appVersionCode_": "1",
         "crosswalkVersion_": "stable",
         "appDescription_": "A silly game for my niece Ivy",

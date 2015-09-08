@@ -162,7 +162,7 @@ var GameState = {
     gameUtils.buildPoopBuffer(gameState.poopCollection);
     
     //buttons
-    this.poop = this.game.add.sprite(30, gameState.statsXOffset+90, 'tinyPoop');
+    this.poop = this.game.add.sprite(30, gameState.statsYOffset+105, 'tinyPoop');
     this.poop.anchor.setTo(0.5);
       
     this.fish = this.game.add.sprite(350, 570, 'fish');
@@ -194,19 +194,20 @@ var GameState = {
     this.selectedItem = null;
       
     //stats
-    var style = { font: "20px Arial", fill: "#000"};
-    var nameStyle = { font: "20px Arial", fill: "#974DB1"};
-    this.game.add.text(10, gameState.statsXOffset, "Name:", style);
-    //this.game.add.text(10, gameState.statsXOffset+30, "High Score:", style);  
-    //this.game.add.text(180, gameState.statsXOffset, "Health:", style);
+    var style = { font: "30px Arial", fill: "#fff"};
+        var poopStyle = { font: "30px Arial", fill: "#000"};  
+    var nameStyle = { font: "30px Arial", fill: "#aaa"};
+    this.game.add.text(10, gameState.statsYOffset-20, "Name:", style);
+    //this.game.add.text(10, gameState.statsYOffset+30, "High Score:", style);  
+    //this.game.add.text(180, gameState.statsYOffset, "Health:", style);
       
-    this.game.add.text(10, gameState.statsXOffset+25, "Health:", style);
-    this.game.add.text(10, gameState.statsXOffset+50, "Fun:", style);
+    this.game.add.text(10, gameState.statsYOffset+15, "Health:", style);
+    this.game.add.text(10, gameState.statsYOffset+50, "Fun:", style);
 
-    this.nameText = this.game.add.text(75, gameState.statsXOffset, "", nameStyle);
-    this.healthText = this.game.add.text(75, gameState.statsXOffset+25, "", style);
-    this.funText = this.game.add.text(75, gameState.statsXOffset+50, "", style);
-    this.poopText = this.game.add.text(75, gameState.statsXOffset+85, "", style);  
+    this.nameText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset-20, "", nameStyle);
+    this.healthText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+15, "", style);
+    this.funText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+50, "", style);
+    this.poopText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+85, "", poopStyle);  
       
     this.refreshStats();
 

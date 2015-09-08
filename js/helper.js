@@ -4,7 +4,8 @@ var gameState = {
     cleanedPoops:0,
     madePoops:0,
     poopBufferSize:50,
-    statsXOffset:15,
+    statsYOffset:25,
+    statsXOffset:115,
     highScore:0
 };
 

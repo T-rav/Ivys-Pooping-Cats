@@ -11,5 +11,7 @@ var gameDefaults = {
     statsYOffset:25,
     statsXOffset:115,
     gameWidth:940, 
-    gameHeight:640
+    gameHeight:640,
+    offscreenX:-100,
+    offscreenY:-100
 };

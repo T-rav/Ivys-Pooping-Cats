@@ -20,9 +20,9 @@ var gameUtils = {
     buildPoopBuffer : function(poopCollection){
         // Create some poops off screen.
         // http://phaser.io/examples/v2/groups/recycling
-        for (var i = 0; i < gameState.poopBufferSize; i++)
+        for (var i = 0; i < gameDefaults.poopBufferSize; i++)
         {
-            poopCollection.create(-100,-100, 'poop');
+            poopCollection.create(gameDefaults.offscreenX,gameDefaults.offscreenY, 'poop');
             var poop = poopCollection.getFirstAlive();
             poop.kill();
         }

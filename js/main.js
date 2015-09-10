@@ -205,8 +205,6 @@ var GameState = {
 
         if (pieceOfShit)
         {
-            alertify.message("poop");
-            
             pieceOfShit.alpha = 1;
             pieceOfShit.position = new PIXI.Point(x-100, y-30);
             pieceOfShit.revive();

@@ -1,132 +1,16 @@
-
-var EndState = function(game){};
-
-EndState.prototype = {
-      preload: function(){
-        // http://www.clker.com/search/cat/3
-        this.game.load.image("gameOver","assets/images/end_screen.png");
-        this.game.load.image('replayBtn', 'assets/images/replay.png');
-        this.game.load.image('tinyPoop', 'assets/images/tiny_poop.png');  
-	},
-  	create: function(){
-		//scaling options
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
-
-        //have the game centered horizontally
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-
-        //screen size will be set automatically
-        this.scale.setScreenSize(true);
-        
-        this.background = this.game.add.sprite(0,0, 'gameOver');
-		//this.game.state.start("GameState");
-        
-        //buttons
-        this.replayBtn = this.game.add.sprite(445, 480, 'replayBtn');
-        this.replayBtn.anchor.setTo(0.5);
-        this.replayBtn.inputEnabled = true;
-        this.replayBtn.events.onInputDown.add(this.playGame, this);
-        
-        var style = { font: "30px Arial", fill: "#fff"};
-        var smallstyle = { font: "20px Arial", fill: "#fff"};
-        this.game.add.text(275, 550, "Replay Ivy's Pooping Cats", style);
-        
-        this.game.add.text(450, 365, gameState.cleanedPoops+"", style);
-        this.endPoopCount = this.game.add.sprite(425, 380, 'tinyPoop');
-        this.endPoopCount.anchor.setTo(0.5);
-        
-        this.uiBlocked = false;
-	},
-    playGame:function(sprint, event){  
-        gameState.cleanedPoops = 0;
-        gameState.madePoops = 0;
-        this.game.state.start("GameState");
-    }
-};
-
-// the load screen - http://www.emanueleferonato.com/2014/08/28/phaser-tutorial-understanding-phaser-states/
-var LoadState = function(game){};
-
-LoadState.prototype = {
-	preload: function(){
-        // http://www.clker.com/search/cat/3
-        this.game.load.image("loading","assets/images/load_screen.png"); 
-        this.game.load.image('settings', 'assets/images/settings.png');
-        this.game.load.image('rewards', 'assets/images/trophy.png');
-        this.game.load.image('playBtn', 'assets/images/play.png');
-	},
-  	create: function(){
-		//scaling options
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
-
-        //have the game centered horizontally
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-
-        //screen size will be set automatically
-        this.scale.setScreenSize(true);
-        
-        this.background = this.game.add.sprite(0,0, 'loading');
-		//this.game.state.start("GameState");
-        
-        //buttons
-        this.playBtn = this.game.add.sprite(365, 450, 'playBtn');
-        this.playBtn.anchor.setTo(0.5);
-        this.playBtn.inputEnabled = true;
-        this.playBtn.events.onInputDown.add(this.playGame, this);
-        
-        this.rewards = this.game.add.sprite(455, 450, 'rewards');
-        this.rewards.anchor.setTo(0.5);
-        this.rewards.inputEnabled = true;
-        this.rewards.events.onInputDown.add(this.adjustSettings, this);
-        
-        this.settings = this.game.add.sprite(545, 450, 'settings');
-        this.settings.anchor.setTo(0.5);
-        this.settings.inputEnabled = true;
-        this.settings.events.onInputDown.add(this.adjustSettings, this);
-        
-        this.uiBlocked = false;
-	},
-    
-    adjustSettings: function(sprite, event){
-        if(!this.uiBlocked) {
-            
-          this.uiBlocked = true;
-          //alpha to indicate selection
-          sprite.alpha = 0.4;
-
-          // TODO : read cats name from localstorage
-          alertify.prompt("Cat's Name", gameState.petName,
-          function(evt, value ){
-            gameState.petName = value;
-          })
-          .set('closable', false); 
-
-          sprite.alpha = 1;    
-          this.uiBlocked = false;    
-        }
-    },
-    
-    playGame:function(sprint, event){
-        this.game.state.start("GameState");
-    }
-} 
-
 // the game play
 var GameState = {
   //load the game assets before the game starts
   preload: function() {
-    this.game.load.image('backyard', 'assets/images/backyard.png');    
-    this.game.load.image('fish', 'assets/images/fish.png');    
-    this.game.load.image('rainbow', 'assets/images/rainbow.png');    
-    this.game.load.image('rotate', 'assets/images/rotate.png');    
-    this.game.load.image('milk', 'assets/images/milk.png');    
-    this.game.load.image('arrow', 'assets/images/arrow.png');
-    this.game.load.image('poop', 'assets/images/poop.png');  
-    this.game.load.image('tinyPoop', 'assets/images/tiny_poop.png');  
+    this.game.load.image('backyard', resources.backyard);    
+    this.game.load.image('fish', resources.fish);    
+    this.game.load.image('rainbow', resources.rainbow);    
+    this.game.load.image('rotate', resources.rotate);    
+    this.game.load.image('milk', resources.milk);    
+    this.game.load.image('poop', resources.poop);  
+    this.game.load.image('tinyPoop', resources.tinyPoop);  
     
-    this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1);   
+    this.load.spritesheet('pet', resources.pet, 97, 83, 5, 1, 1);   
   },
   //executed after everything is loaded
   create: function() {
@@ -162,7 +46,7 @@ var GameState = {
     gameUtils.buildPoopBuffer(gameState.poopCollection);
     
     //buttons
-    this.poop = this.game.add.sprite(30, gameState.statsYOffset+105, 'tinyPoop');
+    this.poop = this.game.add.sprite(30, gameDefaults.statsYOffset+105, 'tinyPoop');
     this.poop.anchor.setTo(0.5);
       
     this.fish = this.game.add.sprite(350, 570, 'fish');
@@ -194,24 +78,18 @@ var GameState = {
     this.selectedItem = null;
       
     //stats
-    var style = { font: "30px Arial", fill: "#fff"};
-        var poopStyle = { font: "30px Arial", fill: "#000"};  
-    var nameStyle = { font: "30px Arial", fill: "#aaa"};
-    this.game.add.text(10, gameState.statsYOffset-20, "Name:", style);
-    //this.game.add.text(10, gameState.statsYOffset+30, "High Score:", style);  
-    //this.game.add.text(180, gameState.statsYOffset, "Health:", style);
-      
-    this.game.add.text(10, gameState.statsYOffset+15, "Health:", style);
-    this.game.add.text(10, gameState.statsYOffset+50, "Fun:", style);
+    this.game.add.text(10, gameDefaults.statsYOffset-20, "Name:", resources.style);
+    this.game.add.text(10, gameDefaults.statsYOffset+15, "Health:", resources.style);
+    this.game.add.text(10, gameDefaults.statsYOffset+50, "Fun:", resources.style);
 
-    this.nameText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset-20, "", nameStyle);
-    this.healthText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+15, "", style);
-    this.funText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+50, "", style);
-    this.poopText = this.game.add.text(gameState.statsXOffset, gameState.statsYOffset+85, "", poopStyle);  
+    this.nameText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset-20, "", resources.nameStyle);
+    this.healthText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+15, "", resources.style);
+    this.funText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+50, "", resources.style);
+    this.poopText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+85, "", resources.poopStyle);  
       
     this.refreshStats();
 
-    //decrease health and fun every 10 seconds
+    //decrease health and fun every x seconds
     this.statsDecreaser = this.game.time.events.loop(Phaser.Timer.SECOND * 3.5, this.reduceProperties, this);
     this.statsDecreaser.timer.start();
     
@@ -231,9 +109,7 @@ var GameState = {
       
       //vibrate device if present
       if(navigator.vibrate) {
-        navigator.vibrate(300);
-        navigator.vibrate(300);
-        navigator.vibrate(350);
+        navigator.vibrate(1500);
       } 
       
       var petRotation = game.add.tween(this.pet);
@@ -329,6 +205,8 @@ var GameState = {
 
         if (pieceOfShit)
         {
+            alertify.message("poop");
+            
             pieceOfShit.alpha = 1;
             pieceOfShit.position = new PIXI.Point(x-100, y-30);
             pieceOfShit.revive();
@@ -365,7 +243,7 @@ var GameState = {
     //var livingPoops = game.poopCollection.countLiving();
     
     if(gameState.madePoops  == 0){
-        healthFactor = 2;
+        healthFactor = -2;
         funFactor = -5;
     }else if(gameState.madePoops >= 1){
         healthFactor = -10;
@@ -406,7 +284,7 @@ var GameState = {
 
 
 //initiate the Phaser framework
-var game = new Phaser.Game(940, 640, Phaser.AUTO);
+var game = new Phaser.Game(gameDefaults.gameWidth, gameDefaults.gameHeight, Phaser.AUTO);
 game.state.add('LoadState', LoadState);
 game.state.add('GameState', GameState);
 game.state.add('EndState', EndState);

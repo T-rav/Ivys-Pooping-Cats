@@ -1,14 +1,3 @@
-var gameState = {
-    petName : "Fluffy",
-    poopCollection:"",
-    cleanedPoops:0,
-    madePoops:0,
-    poopBufferSize:50,
-    statsYOffset:25,
-    statsXOffset:115,
-    highScore:0
-};
-
 var gameUtils = {
     
      removePoop : function(item) {

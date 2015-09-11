@@ -8,7 +8,8 @@ var GameState = {
     this.game.load.image('rotate', resources.rotate);    
     this.game.load.image('milk', resources.milk);    
     this.game.load.image('poop', resources.poop);  
-    this.game.load.image('goldenPoop', resources.goldenPoop);    
+    this.game.load.image('goldenPoop', resources.goldenPoop);
+    this.game.load.image('sickPoop', resources.sickPoop);
     this.game.load.image('tinyPoop', resources.tinyPoop);  
     
     this.load.spritesheet('pet', resources.pet, 97, 83, 5, 1, 1);  
@@ -60,19 +61,19 @@ var GameState = {
       
     this.fish = this.game.add.sprite(350, 570, 'fish');
     this.fish.anchor.setTo(0.5);
-    this.fish.customParams = {health: 10};
+    this.fish.customParams = {health: 15};
     this.fish.inputEnabled = true;
     this.fish.events.onInputDown.add(this.pickItem, this);
 
     this.rainbow = this.game.add.sprite(430, 570, 'rainbow');
     this.rainbow.anchor.setTo(0.5);
-    this.rainbow.customParams = {health: -10, fun: 20};
+    this.rainbow.customParams = {health: -5, fun: 25};
     this.rainbow.inputEnabled = true;
     this.rainbow.events.onInputDown.add(this.pickItem, this);
 
     this.milk = this.game.add.sprite(510, 570, 'milk');
     this.milk.anchor.setTo(0.5);
-    this.milk.customParams = {fun: 10, health: 5};
+    this.milk.customParams = {fun: 15, health: 10};
     this.milk.inputEnabled = true;
     this.milk.events.onInputDown.add(this.pickItem, this);
 
@@ -143,9 +144,13 @@ var GameState = {
             gameState.goldenPoopWaitCounter += 1;  
             var pieceOfShit = gameState.poopCollection.getFirstExists(false);
 
-            // time for a golden poop ;)
+            // time for a drop poop - golden or green ;)
             if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
-                pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+                if(gameUtils.isPositiveDrop()){
+                    pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+                }else{
+                    pieceOfShit = gameState.sickPoopCollection.getFirstExists(false);   
+                }
                 gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(gameDefaults.goldenPoopDropMin,gameDefaults.goldenPoopDropMax);
                 gameState.goldenPoopWaitCounter = 0;
             }
@@ -219,11 +224,11 @@ var GameState = {
           
         // time for a golden poop ;)
         if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
-            //if(gameUtils.isPositiveDrop()){
-            //    pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
-            //}else{
+            if(gameUtils.isPositiveDrop()){
+                pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+            }else{
                 pieceOfShit = gameState.sickPoopCollection.getFirstExists(false);   
-            //}
+            }
             gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(gameDefaults.goldenPoopDropMin,gameDefaults.goldenPoopDropMax);
             gameState.goldenPoopWaitCounter = 0;
         }
@@ -264,7 +269,7 @@ var GameState = {
  
     var healthFactor = 0;
     var funFactor = 0;
-    //var livingPoops = game.poopCollection.countLiving();
+    var livingPoops = gameState.poopCollection.countLiving();
     
     if(gameState.madePoops  == 0){
         healthFactor = -2;
@@ -273,13 +278,19 @@ var GameState = {
         healthFactor = -10;
         funFactor = -15;
     }else if(gameState.madePoops >= 5){
-        healthFactor = -20;
-        funFactor = -30;
+        healthFactor = -15;
+        funFactor = -20;
     }else if(gameState.madePoops >= 10){
-        healthFactor = -50;
-        funFactor = -70;   
+        healthFactor = -20;
+        funFactor = -20;   
+    }else if(gameState.madePoops >= 20){
+        healthFactor = -30;
+        funFactor = -30;   
+    }else if(gameState.madePoops >= 35){
+        healthFactor = -40;
+        funFactor = -45;   
     }
-
+      
     this.pet.customParams.health = Math.max(0, this.pet.customParams.health + healthFactor);
     this.pet.customParams.fun = Math.max(0, this.pet.customParams.fun + funFactor);
   },

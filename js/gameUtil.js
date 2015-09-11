@@ -20,9 +20,8 @@ var gameUtils = {
                                     funBonus = gameUtils.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
                                     
                                     if(item.customParams.isSickBonus){
-                                        alertify.message("SICK");
-                                        healthBonus *= -1.1;
-                                        funBonus *= 1.1;
+                                        healthBonus = healthBonus * -1;
+                                        funBonus = funBonus * -1;
                                     }
                                     
                                     alertify.message("Health +"+healthBonus + " Fun +"+funBonus);

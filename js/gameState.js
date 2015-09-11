@@ -26,6 +26,6 @@ var gameDefaults = {
     minBonus:15,
     maxBonus:30,
     goldenPoopDropMin:5,
-    goldenPoopDropMax:20,
+    goldenPoopDropMax:15,
     decreaseSeconds:3.5
 };

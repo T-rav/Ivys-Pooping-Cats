@@ -21,6 +21,9 @@ var gameDefaults = {
     offscreenY:-100,
     poopDropXOffset:100,
     poopDropYOffset:30,
-    minBonus:10,
-    maxBonus:25
+    minBonus:15,
+    maxBonus:30,
+    goldenPoopDropMin:10,
+    goldenPoopDropMax:20,
+    decreaseSeconds:3.5
 };

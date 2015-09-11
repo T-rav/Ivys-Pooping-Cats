@@ -92,12 +92,13 @@ var GameState = {
     this.healthText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+15, "", resources.style);
     this.funText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+50, "", resources.style);
     this.poopText = this.game.add.text(gameDefaults.statsXOffset, gameDefaults.statsYOffset+85, "", resources.poopStyle);  
-      
-    this.refreshStats();
 
     //decrease health and fun every x seconds
-    this.statsDecreaser = this.game.time.events.loop(Phaser.Timer.SECOND * 3.5, this.reduceProperties, this);
+    this.statsDecreaser = this.game.time.events.loop(Phaser.Timer.SECOND * gameDefaults.decreaseSeconds, this.reduceProperties, this);
     this.statsDecreaser.timer.start();
+      
+    this.statsRefresh = this.game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.refreshStats, this);
+    this.statsRefresh.timer.start();  
     
     this.uiBlocked = false;
     this.poopCount = 0;
@@ -109,13 +110,12 @@ var GameState = {
     if(!this.uiBlocked) {
       this.uiBlocked = true;
 
-      //alpha to indicate selection
       this.clearSelection();
       sprite.alpha = 0.4;
       
       //vibrate device if present
       if(navigator.vibrate) {
-        navigator.vibrate(1500);
+        navigator.vibrate(1200);
       } 
       
       var petRotation = game.add.tween(this.pet);
@@ -137,7 +137,15 @@ var GameState = {
           
         for(var i = 0; i < shits; i++){
             gameState.madePoops += 1;
+            gameState.goldenPoopWaitCounter += 1;  
             var pieceOfShit = gameState.poopCollection.getFirstExists(false);
+
+            // time for a golden poop ;)
+            if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
+                pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+                gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(gameDefaults.goldenPoopDropMin,gameDefaults.goldenPoopDropMax);
+                gameState.goldenPoopWaitCounter = 0;
+            }
 
             if (pieceOfShit)
             {   
@@ -147,8 +155,6 @@ var GameState = {
             }
         }
           
-        //show updated stats
-        this.refreshStats();
       }, this);
       petRotation.start();
     
@@ -202,10 +208,7 @@ var GameState = {
             this.pet.customParams[stat] += newItem.customParams[stat];
           }
         }
-        
-        //show updated stats
-        this.refreshStats();
-          
+
         // make cat poop
         gameState.madePoops += 1;
         gameState.goldenPoopWaitCounter += 1;  
@@ -214,7 +217,7 @@ var GameState = {
         // time for a golden poop ;)
         if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
             pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
-            gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(5,10);
+            gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(gameDefaults.goldenPoopDropMin,gameDefaults.goldenPoopDropMax);
             gameState.goldenPoopWaitCounter = 0;
         }
         
@@ -272,8 +275,6 @@ var GameState = {
 
     this.pet.customParams.health = Math.max(0, this.pet.customParams.health + healthFactor);
     this.pet.customParams.fun = Math.max(0, this.pet.customParams.fun + funFactor);
-
-    this.refreshStats();
   },
 
   //game loop, executed many times per second
@@ -286,7 +287,7 @@ var GameState = {
       this.pet.frame = 4;
       this.uiBlocked = true;
         
-      this.game.time.events.add(2500, this.gameOver, this);
+      this.game.time.events.add(1500, this.gameOver, this);
     }
   },
   gameOver: function() {

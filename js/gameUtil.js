@@ -11,16 +11,20 @@ var gameUtils = {
                             item.kill();
                             gameState.cleanedPoops += 1;
                             if(item.customParams){
-                                var healthBonus = this.getRandomInt(2, 5);
+
+                                var healthBonus = gameUtils.getRandomInt(2, 5);
                                 var funBonus = 0;
-                                
+
                                 if(item.customParams.hasBonus){
-                                    healthBonus = this.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
-                                    funBonus = this.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);    
+                                    healthBonus = gameUtils.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
+                                    funBonus = gameUtils.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
+
+                                    alertify.message("Health +"+healthBonus + " Fun +"+funBonus);
                                 }
-                                
+
                                 gameState.thePet.customParams.health += healthBonus;
-                                gameState.thePet.customParams.fun += funBonus;
+                                gameState.thePet.customParams.fun += funBonus; 
+                                
                             }
                         }
                     },150);
@@ -82,21 +86,6 @@ var gameUtils = {
 
         return y;
     },
-    
-    makePoop : function(){
-        // make cat pooop
-        //gameState.madePoops += 1;
-        
-        var pieceOfShit = gameState.poopCollection.getFirstExists(false);
-
-        if (pieceOfShit)
-        {
-            pieceOfShit.alpha = 1;
-            pieceOfShit.position = new PIXI.Point(x-100, y-30);
-            pieceOfShit.revive();
-        }
-    },
-    
     calaculateGoldenPoopInterval : function(min, max){
         return this.getRandomInt(min, max);   
     }

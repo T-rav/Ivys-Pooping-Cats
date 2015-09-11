@@ -23,7 +23,7 @@ var gameDefaults = {
     poopDropYOffset:30,
     minBonus:15,
     maxBonus:30,
-    goldenPoopDropMin:10,
+    goldenPoopDropMin:5,
     goldenPoopDropMax:20,
     decreaseSeconds:3.5
 };

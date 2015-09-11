@@ -37,26 +37,21 @@ LoadState.prototype = {
         this.settings.inputEnabled = true;
         this.settings.events.onInputDown.add(this.adjustSettings, this);
         
-        this.uiBlocked = false;
 	},
     
     adjustSettings: function(sprite, event){
-        if(!this.uiBlocked) {
-            
-          this.uiBlocked = true;
-          //alpha to indicate selection
-          sprite.alpha = 0.4;
 
-          // TODO : read cats name from localstorage
-          alertify.prompt("Cat's Name", gameState.petName,
-          function(evt, value ){
-            gameState.petName = value;
-          })
-          .set('closable', false); 
+      //alpha to indicate selection
+      sprite.alpha = 0.4;
 
-          sprite.alpha = 1;    
-          this.uiBlocked = false;    
-        }
+      // TODO : read cats name from localstorage
+      alertify.prompt("Cat's Name", gameState.petName,
+      function(evt, value ){
+        gameState.petName = value;
+      })
+      .set('closable', false); 
+
+      sprite.alpha = 1;    
     },
     
     playGame:function(sprint, event){

@@ -18,7 +18,13 @@ var gameUtils = {
                                 if(item.customParams.hasBonus){
                                     healthBonus = gameUtils.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
                                     funBonus = gameUtils.getRandomInt(gameDefaults.minBonus, gameDefaults.maxBonus);
-
+                                    
+                                    if(item.customParams.isSickBonus){
+                                        alertify.message("SICK");
+                                        healthBonus *= -1.1;
+                                        funBonus *= 1.1;
+                                    }
+                                    
                                     alertify.message("Health +"+healthBonus + " Fun +"+funBonus);
                                 }
 
@@ -53,7 +59,20 @@ var gameUtils = {
         {
             poopCollection.create(gameDefaults.offscreenX,gameDefaults.offscreenY, 'goldenPoop');
             var poop = poopCollection.getFirstAlive();
-            poop.customParams = {hasBonus:true};
+            poop.customParams = {hasBonus:true, isSickBonus:false};
+            poop.kill();
+        }
+
+        poopCollection.setAll('inputEnabled', true);
+        poopCollection.callAll('events.onInputUp.add', 'events.onInputUp', gameUtils.removePoop);    
+    },
+    
+    buildSickPoopBuffer : function(poopCollection){
+        for (var i = 0; i < gameDefaults.sickPoopBufferSize; i++)
+        {
+            poopCollection.create(gameDefaults.offscreenX,gameDefaults.offscreenY, 'sickPoop');
+            var poop = poopCollection.getFirstAlive();
+            poop.customParams = {hasBonus:true, isSickBonus:true };
             poop.kill();
         }
 
@@ -87,7 +106,16 @@ var gameUtils = {
         return y;
     },
     calaculateGoldenPoopInterval : function(min, max){
-        return this.getRandomInt(min, max);   
+        return gameUtils.getRandomInt(min, max);   
+    },
+    isPositiveDrop:function(){
+        var val =  gameUtils.getRandomInt(0,100);
+        
+        if(val <= 50){
+            return false;   
+        }
+        
+        return true;
     }
     
 };

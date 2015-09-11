@@ -14,6 +14,7 @@ var resources = {
     milk: "assets/images/milk.png",
     poop: "assets/images/poop.png",
     goldenPoop: "assets/images/golden_poop.png",
+    sickPoop: "assets/images/sick_poop.png",
     tinyPoop: "assets/images/tiny_poop.png",
     pet: "assets/images/pet.png",
     

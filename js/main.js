@@ -48,8 +48,11 @@ var GameState = {
     // Collections
     gameState.poopCollection = game.add.group();
     gameState.goldenPoopCollection = game.add.group();
+    gameState.sickPoopCollection = game.add.group();
+      
     gameUtils.buildPoopBuffer(gameState.poopCollection);
     gameUtils.buildGoldenPoopBuffer(gameState.goldenPoopCollection);
+    gameUtils.buildSickPoopBuffer(gameState.sickPoopCollection);
     
     //buttons
     this.poop = this.game.add.sprite(30, gameDefaults.statsYOffset+105, 'tinyPoop');
@@ -216,7 +219,11 @@ var GameState = {
           
         // time for a golden poop ;)
         if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
-            pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+            //if(gameUtils.isPositiveDrop()){
+            //    pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+            //}else{
+                pieceOfShit = gameState.sickPoopCollection.getFirstExists(false);   
+            //}
             gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(gameDefaults.goldenPoopDropMin,gameDefaults.goldenPoopDropMax);
             gameState.goldenPoopWaitCounter = 0;
         }

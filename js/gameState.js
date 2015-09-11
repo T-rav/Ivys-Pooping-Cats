@@ -2,6 +2,7 @@ var gameState = {
     petName : "Fluffy",
     poopCollection:"",
     goldenPoopCollection:"",
+    sickPoopCollection:"",
     cleanedPoops:0,
     madePoops:0,
     goldenPoopsDropCounter:1,
@@ -13,6 +14,7 @@ var gameState = {
 var gameDefaults = {
     poopBufferSize:75,
     goldenPoopBufferSize:15,
+    sickPoopBufferSize:25,
     statsYOffset:25,
     statsXOffset:115,
     gameWidth:940, 

@@ -1,5 +1,7 @@
 Rewards - @ x poops + fish/rainbows/milk/tumbles
-Boosters - Stats + Power Cleanup, drop every 8-12 poops.
+Boosters - Stats + Power Cleanup, drop every 8-12 poops. - DONE : Golden Poop
+Boosters Text - Get Powerup stats to display above the golden poop when picked up
+
 Speed up every 20 poops
 +5% depletion per 10 poops
 Stray cat every 10-20 poops.

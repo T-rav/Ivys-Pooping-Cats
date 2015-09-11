@@ -13,6 +13,7 @@ var resources = {
     rotate: "assets/images/rotate.png",
     milk: "assets/images/milk.png",
     poop: "assets/images/poop.png",
+    goldenPoop: "assets/images/golden_poop.png",
     tinyPoop: "assets/images/tiny_poop.png",
     pet: "assets/images/pet.png",
     
@@ -20,20 +21,9 @@ var resources = {
     endScreen: "assets/images/end_screen.png",
     replayBtn: "assets/images/replay.png",
     
-    style : { 
-                font: "30px Arial", 
-                fill: "#fff"
-            },
-    poopStyle : { 
-                    font: "30px Arial", 
-                    fill: "#000"
-                },              
-    nameStyle : { 
-                    font: "30px Arial", 
-                    fill: "#aaa"
-                },
-    smallstyle : { 
-                    font: "20px Arial", 
-                    fill: "#fff"
-                 }
+    // styles
+    style : { font: "30px Arial", fill: "#fff" },
+    poopStyle : { font: "30px Arial", fill: "#000" },              
+    nameStyle : { font: "30px Arial", fill: "#aaa" },
+    smallstyle : { font: "20px Arial", fill: "#fff" }
 };

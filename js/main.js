@@ -8,9 +8,12 @@ var GameState = {
     this.game.load.image('rotate', resources.rotate);    
     this.game.load.image('milk', resources.milk);    
     this.game.load.image('poop', resources.poop);  
+    this.game.load.image('goldenPoop', resources.goldenPoop);    
     this.game.load.image('tinyPoop', resources.tinyPoop);  
     
-    this.load.spritesheet('pet', resources.pet, 97, 83, 5, 1, 1);   
+    this.load.spritesheet('pet', resources.pet, 97, 83, 5, 1, 1);  
+    
+    gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(5,10);
   },
   //executed after everything is loaded
   create: function() {
@@ -40,10 +43,13 @@ var GameState = {
     //draggable pet
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
+    gameState.thePet = this.pet;
       
     // Collections
-    gameState.poopCollection = game.add.group();  
+    gameState.poopCollection = game.add.group();
+    gameState.goldenPoopCollection = game.add.group();
     gameUtils.buildPoopBuffer(gameState.poopCollection);
+    gameUtils.buildGoldenPoopBuffer(gameState.goldenPoopCollection);
     
     //buttons
     this.poop = this.game.add.sprite(30, gameDefaults.statsYOffset+105, 'tinyPoop');
@@ -128,6 +134,7 @@ var GameState = {
         var poopOffsetY = gameUtils.getRandomInt(10,30);
         var x = gameUtils.boundXCordinate(petX, poopOffsetX);
         var y = gameUtils.boundYCordinate(petY, poopOffsetY);
+          
         for(var i = 0; i < shits; i++){
             gameState.madePoops += 1;
             var pieceOfShit = gameState.poopCollection.getFirstExists(false);
@@ -201,15 +208,24 @@ var GameState = {
           
         // make cat poop
         gameState.madePoops += 1;
+        gameState.goldenPoopWaitCounter += 1;  
         var pieceOfShit = gameState.poopCollection.getFirstExists(false);
-
+          
+        // time for a golden poop ;)
+        if(gameState.goldenPoopWaitCounter >= gameState.goldenPoopsDropCounter){
+            pieceOfShit = gameState.goldenPoopCollection.getFirstExists(false);
+            gameState.goldenPoopsDropCounter = gameUtils.calaculateGoldenPoopInterval(5,10);
+            gameState.goldenPoopWaitCounter = 0;
+        }
+        
+        // do something with that piece of shit ;)  
         if (pieceOfShit)
         {
             pieceOfShit.alpha = 1;
-            pieceOfShit.position = new PIXI.Point(x-100, y-30);
+            pieceOfShit.position = new PIXI.Point(x-gameDefaults.poopDropXOffset, y-gameDefaults.poopDropYOffset);
             pieceOfShit.revive();
-        }
-          
+        }  
+       
         //clear selection
         this.clearSelection();
       }, this);

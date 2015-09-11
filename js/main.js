@@ -265,10 +265,10 @@ var GameState = {
     }else if(gameState.madePoops >= 1){
         healthFactor = -10;
         funFactor = -15;
-    }else if(gameState.madePoops >= 3){
+    }else if(gameState.madePoops >= 5){
         healthFactor = -20;
         funFactor = -30;
-    }else if(gameState.madePoops >= 5){
+    }else if(gameState.madePoops >= 10){
         healthFactor = -50;
         funFactor = -70;   
     }
@@ -291,8 +291,6 @@ var GameState = {
     }
   },
   gameOver: function() {
-    // todo : draw end game screen  
-    //this.game.state.restart();
     this.game.state.start("EndState");
   },
 };

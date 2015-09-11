@@ -26,7 +26,6 @@ var gameUtils = {
                     },150);
             },150);
         },100);
-        
     },
     
     buildPoopBuffer : function(poopCollection){

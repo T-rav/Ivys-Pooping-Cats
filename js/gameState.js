@@ -12,9 +12,9 @@ var gameState = {
 };
 
 var gameDefaults = {
-    poopBufferSize:75,
-    goldenPoopBufferSize:15,
-    sickPoopBufferSize:25,
+    poopBufferSize:50,
+    goldenPoopBufferSize:10,
+    sickPoopBufferSize:10,
     statsYOffset:25,
     statsXOffset:115,
     gameWidth:940, 
@@ -26,6 +26,6 @@ var gameDefaults = {
     minBonus:25,
     maxBonus:50,
     goldenPoopDropMin:5,
-    goldenPoopDropMax:15,
+    goldenPoopDropMax:10,
     decreaseSeconds:3.5
 };

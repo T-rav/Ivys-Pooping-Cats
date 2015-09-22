@@ -27,16 +27,17 @@ LoadState.prototype = {
         this.playBtn.inputEnabled = true;
         this.playBtn.events.onInputDown.add(this.playGame, this);
         
+        /*
         this.rewards = this.game.add.sprite(455, 450, 'rewards');
         this.rewards.anchor.setTo(0.5);
         this.rewards.inputEnabled = true;
         this.rewards.events.onInputDown.add(this.adjustSettings, this);
+        */
         
         this.settings = this.game.add.sprite(545, 450, 'settings');
         this.settings.anchor.setTo(0.5);
         this.settings.inputEnabled = true;
         this.settings.events.onInputDown.add(this.adjustSettings, this);
-        
 	},
     
     adjustSettings: function(sprite, event){

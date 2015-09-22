@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "69206742-e991-4e36-9093-54e7b1cb633b",
-      "lastModifiedDate": 1442932545312,
+      "lastModifiedDate": 1442932968770,
       "creationDate": 1416530865675
     },
     "sourceDirectory": "",
@@ -26,7 +26,7 @@
     "cordovaPlugins": [
       {
         "id": "org.apache.cordova.vibration",
-        "version": "0.3.11",
+        "version": "0.3.12",
         "selectedState": "Included",
         "data": {},
         "paramvals": {},
@@ -35,7 +35,7 @@
       },
       {
         "id": "org.apache.cordova.splashscreen",
-        "version": "0.3.3",
+        "version": "0.3.5",
         "selectedState": "Included",
         "data": {},
         "paramvals": {},
@@ -44,7 +44,7 @@
       },
       {
         "id": "org.apache.cordova.dialogs",
-        "version": "0.2.10",
+        "version": "0.2.11",
         "selectedState": "Included",
         "data": {},
         "paramvals": {},
@@ -160,7 +160,7 @@
         "addlPermissions_": "",
         "excludedLibraries_": "",
         "iosProvs_": [],
-        "cordovaCLIVersion_": "4.0",
+        "cordovaCLIVersion_": "4.1.2",
         "appVersion_": "0.9.4",
         "appVersionCode_": "2",
         "crosswalkVersion_": "stable",
